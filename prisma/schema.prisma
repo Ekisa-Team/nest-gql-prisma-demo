@@ -10,12 +10,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// model User {
-//   id    Int    @id @default(autoincrement())
-//   name  String
-//   email String
-//   Posts Post[]
-// }
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Posts     Post[]
+}
 
 model Post {
   id        Int      @id @default(autoincrement())
@@ -23,6 +25,7 @@ model Post {
   content   String
   published Boolean  @default(false)
   createdAt DateTime @default(now())
-  // userId    Int
-  // user      User     @relation(fields: [userId], references: [id])
+  updatedAt DateTime @updatedAt
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

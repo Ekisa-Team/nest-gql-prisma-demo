@@ -14,65 +14,65 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostResolvers = void 0;
 const graphql_1 = require("@nestjs/graphql");
-const graphql_2 = require("../graphql");
-const posts_service_1 = require("./posts.service");
+const prisma_service_1 = require("../prisma.service");
+const post_types_1 = require("./post.types");
 let PostResolvers = class PostResolvers {
-    constructor(postsService) {
-        this.postsService = postsService;
+    constructor(prisma) {
+        this.prisma = prisma;
     }
     async posts() {
-        return this.postsService.posts();
+        return this.prisma.post.findMany();
     }
     async post(args) {
-        return this.postsService.post(args);
+        return this.prisma.post.findUnique({
+            where: {
+                id: parseInt(args),
+            },
+        });
     }
-    async create(args) {
-        return this.postsService.createPost(args);
+    async createPost(input) {
+        return this.prisma.post.create({
+            data: input,
+        });
     }
-    async update(args) {
-        return this.postsService.updatePost(args);
-    }
-    async delete(args) {
-        return this.postsService.deletePost(args);
+    async deletePost(args) {
+        return this.prisma.post.delete({
+            where: {
+                id: parseInt(args),
+            },
+        });
     }
 };
 __decorate([
-    (0, graphql_1.Query)('posts'),
+    (0, graphql_1.Query)(() => [post_types_1.Post]),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PostResolvers.prototype, "posts", null);
 __decorate([
-    (0, graphql_1.Query)('post'),
+    (0, graphql_1.Query)(() => post_types_1.Post),
     __param(0, (0, graphql_1.Args)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PostResolvers.prototype, "post", null);
 __decorate([
-    (0, graphql_1.Mutation)('createPost'),
+    (0, graphql_1.Mutation)(() => post_types_1.Post),
     __param(0, (0, graphql_1.Args)('input')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [graphql_2.NewPost]),
+    __metadata("design:paramtypes", [post_types_1.PostCreateInput]),
     __metadata("design:returntype", Promise)
-], PostResolvers.prototype, "create", null);
+], PostResolvers.prototype, "createPost", null);
 __decorate([
-    (0, graphql_1.Mutation)('updatePost'),
-    __param(0, (0, graphql_1.Args)('input')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [graphql_2.UpdatePost]),
-    __metadata("design:returntype", Promise)
-], PostResolvers.prototype, "update", null);
-__decorate([
-    (0, graphql_1.Mutation)('deletePost'),
+    (0, graphql_1.Mutation)(() => post_types_1.Post),
     __param(0, (0, graphql_1.Args)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], PostResolvers.prototype, "delete", null);
+], PostResolvers.prototype, "deletePost", null);
 PostResolvers = __decorate([
-    (0, graphql_1.Resolver)('Post'),
-    __metadata("design:paramtypes", [posts_service_1.PostsService])
+    (0, graphql_1.Resolver)(() => post_types_1.Post),
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
 ], PostResolvers);
 exports.PostResolvers = PostResolvers;
 //# sourceMappingURL=posts.resolver.js.map

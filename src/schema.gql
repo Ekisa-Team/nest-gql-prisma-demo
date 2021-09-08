@@ -1,0 +1,52 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  createPost(input: PostCreateInput!): Post!
+  createUser(input: UserCreateInput!): User!
+  deletePost(id: String!): Post!
+  deleteUser(id: String!): User!
+}
+
+type Post {
+  content: String!
+  createdAt: DateTime!
+  id: ID!
+  published: Boolean!
+  title: String!
+  updatedAt: DateTime!
+  userId: Float!
+}
+
+input PostCreateInput {
+  content: String!
+  published: Boolean
+  title: String!
+  userId: Float!
+}
+
+type Query {
+  post(id: String!): Post!
+  posts: [Post!]!
+  users: [User!]!
+}
+
+type User {
+  createdAt: DateTime!
+  email: String!
+  id: ID!
+  name: String!
+  posts: [Post!]!
+  updatedAt: DateTime!
+}
+
+input UserCreateInput {
+  email: String!
+  name: String!
+}

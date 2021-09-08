@@ -1,33 +1,53 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { NewPost, UpdatePost } from 'src/graphql';
-import { PostsService } from './posts.service';
+import { PrismaService } from 'src/prisma.service';
+import { Post, PostCreateInput } from './post.types';
 
-@Resolver('Post')
+@Resolver(() => Post)
 export class PostResolvers {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(private prisma: PrismaService) {}
 
-  @Query('posts')
+  @Query(() => [Post])
   async posts() {
-    return this.postsService.posts();
+    return this.prisma.post.findMany();
   }
 
-  @Query('post')
+  @Query(() => Post)
   async post(@Args('id') args: string) {
-    return this.postsService.post(args);
+    return this.prisma.post.findUnique({
+      where: {
+        id: parseInt(args),
+      },
+    });
   }
 
-  @Mutation('createPost')
-  async create(@Args('input') args: NewPost) {
-    return this.postsService.createPost(args);
+  @Mutation(() => Post)
+  async createPost(@Args('input') input: PostCreateInput) {
+    return this.prisma.post.create({
+      data: input,
+    });
   }
 
-  @Mutation('updatePost')
-  async update(@Args('input') args: UpdatePost) {
-    return this.postsService.updatePost(args);
-  }
+  // @Mutation('updatePost')
+  // async update(@Args('input') args: PostUpdateInput) {
+  //   const { id, published, title, content } = args;
+  //   return this.prisma.post.update({
+  //     where: {
+  //       id: parseInt(id),
+  //     },
+  //     data: {
+  //       ...(published && { published }),
+  //       ...(title && { title }),
+  //       ...(content && { content }),
+  //     },
+  //   });
+  // }
 
-  @Mutation('deletePost')
-  async delete(@Args('id') args: string) {
-    return this.postsService.deletePost(args);
+  @Mutation(() => Post)
+  async deletePost(@Args('id') args: string) {
+    return this.prisma.post.delete({
+      where: {
+        id: parseInt(args),
+      },
+    });
   }
 }

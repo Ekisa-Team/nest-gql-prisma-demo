@@ -10,12 +10,11 @@ exports.PostsModule = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma.service");
 const posts_resolver_1 = require("./posts.resolver");
-const posts_service_1 = require("./posts.service");
 let PostsModule = class PostsModule {
 };
 PostsModule = __decorate([
     (0, common_1.Module)({
-        providers: [posts_service_1.PostsService, posts_resolver_1.PostResolvers, prisma_service_1.PrismaService],
+        providers: [posts_resolver_1.PostResolvers, prisma_service_1.PrismaService],
     })
 ], PostsModule);
 exports.PostsModule = PostsModule;
